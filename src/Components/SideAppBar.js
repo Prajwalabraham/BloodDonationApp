@@ -1,6 +1,6 @@
 import { Sidebar, Menu, MenuItem, SubMenu, sidebarClasses  } from 'react-pro-sidebar';
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ListItemText from '@mui/material/ListItemText';
@@ -18,14 +18,17 @@ import EventIcon from '@mui/icons-material/Event';
 import LogoutIcon from '@mui/icons-material/Logout';
 import BloodtypeIcon from '@mui/icons-material/Bloodtype';
 import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from 'react-router-dom';
 import HelpCenterOutlinedIcon from '@mui/icons-material/HelpCenterOutlined';
 import BloodtypeTwoToneIcon from '@mui/icons-material/BloodtypeTwoTone';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivismTwoTone';
 
 const SideAppbar = (props) => {
   const [collapsed, setCollapsed] = React.useState(false);
-  
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+  }
   return ( 
     <> 
   
@@ -73,8 +76,8 @@ const SideAppbar = (props) => {
         <MenuItem icon={<AddIcon />} component={<Link to="/MakeRequest" />} label="Make Request">Make Request</MenuItem>
         <MenuItem icon={<HelpCenterOutlinedIcon />} component={<Link to="/OverallRequest" />} label="Overall Request">Overall Request</MenuItem>
         <MenuItem icon={<BloodtypeTwoToneIcon />} component={<Link to="/DonateBlood" />} label="Donate Blood">Donate Blood</MenuItem>
-        <MenuItem icon={<VolunteerActivismIcon />} component={<Link to="/DonorsList" />} label="Donors">Donors</MenuItem>
-        <MenuItem icon={<SettingsIcon />} component={<Link to="/EventAdminDashboard" />} label="Settings">Settings</MenuItem>
+        <MenuItem icon={<VolunteerActivismIcon />} component={<Link to="/Donors" />} label="Donors">Donors</MenuItem>
+        <MenuItem icon={<SettingsIcon />} component={<Link to="/UserDashboard" />} label="Settings">Settings</MenuItem>
       </Menu>
       <Divider />
       <Box sx={{
@@ -83,7 +86,7 @@ const SideAppbar = (props) => {
       bottom: 0,
       position:'absolute',
     }}>
-      <Button sx={{ fontSize: 18, padding: 0, color: '#000000', fontWeight:'Bold', width:'100%' }} startIcon={collapsed ? <LogoutIcon size={40} /> : <LogoutIcon size={40}  />} > {collapsed ? null : 'Logout'}</Button>
+      <Button onClick={handleLogout} sx={{ fontSize: 18, padding: 0, color: '#000000', fontWeight:'Bold', width:'100%' }} startIcon={collapsed ? <LogoutIcon size={40} /> : <LogoutIcon size={40}  />} > {collapsed ? null : 'Logout'}</Button>
     </Box>
     </Sidebar>
     </>

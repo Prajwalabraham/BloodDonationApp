@@ -1,0 +1,9 @@
+POST http://localhost:8080/api/signup
+Content-Type: application/json
+
+{
+    "name":"Jilu Thomas",
+    "phone":"9035485728",
+    "choice":"NON-VEG",
+    "volTeam":"Sound"
+}

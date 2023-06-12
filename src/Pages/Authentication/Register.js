@@ -11,11 +11,13 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Divider from '@mui/material/Divider';
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
 function Register() {
+    const navigate = useNavigate()
     const [username,setUsername] = React.useState('')
     const [password,setPassword] = React.useState('')
     const [confirmPassword,setConfirmPassword] = React.useState('')
@@ -58,8 +60,22 @@ function Register() {
       }
 
       console.log(userData);
+      axios.post("http://localhost:8080/api/signup", userData)
+      .then(res => {
+        console.log(res);
+        alert('Registered Successfully')
+        if (res.status === 201) {    
+          localStorage.setItem('userID', res.data.userId)
+          localStorage.setItem('username', res.data.username)
+          navigate('/UserDashboard') 
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        alert('Error Occured! Check your console for details') 
+      })
+    
     }
-
 
   return (
     <Container sx={{

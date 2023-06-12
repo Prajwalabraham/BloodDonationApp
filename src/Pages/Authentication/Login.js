@@ -6,10 +6,12 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
+    const navigate = useNavigate()
     const [username,setUsername] = React.useState('')
     const [password,setPassword] = React.useState('')
     const [usernameError,setUsernameError] = React.useState(false)
@@ -18,7 +20,30 @@ function Login() {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,}$/;
         return regex.test(password);
       };
-      
+    
+    const handleLogin = () => {
+      let userData = {
+        username:username,
+        password:password
+      }
+      axios({
+        method:'post',
+        url: 'http://localhost:8080/api/login',
+        data: userData
+      })
+      .then(res => {
+        console.log(res);
+        alert(res.data)
+        if(res.status === 200){
+          localStorage.setItem('userID', res.data.userId)
+          localStorage.setItem('username', res.data.username)
+          navigate('/UserDashboard')
+        }
+      })
+      .catch(err => {
+        alert("Invalid Username or Password")
+      })
+    }
 
   return (
     <Container sx={{
@@ -72,6 +97,7 @@ function Login() {
                 height:'55px',
                 borderRadius:10,
               }} 
+              onClick={handleLogin}
               variant="contained">
               Login
             </Button>

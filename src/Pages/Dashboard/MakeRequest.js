@@ -10,13 +10,23 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 function MakeRequest() {
+
+    const navigate = useNavigate()
+    React.useEffect(() => {
+      let user = localStorage.getItem('username')
+      if (!user) {
+        navigate('/')
+      }
+    }, []);
     const [Name, setName] = React.useState('');
     const [Email, setEmail] = React.useState('');
     const [Phone, setPhone] = React.useState('');
-    const [Age, setAge] = React.useState('');
+    const [Age, setAge] = React.useState(0);
     const [Gender, setGender] = React.useState('');
     const [BloodGroup, setBloodGroup] = React.useState('');
     const [Disease, setDisease] = React.useState('');
@@ -25,17 +35,34 @@ function MakeRequest() {
 
     const handleRequestSubmit = () => {
         let data = {
-            Name,
-            Email,
-            Phone,
-            Age,
-            Disease,
-            Gender,
-            BloodGroup,
-            Address,
-            Units,
+            name:Name,
+            email:Email,
+            phone:Phone,
+            age:Age,
+            disease:Disease,
+            gender:Gender,
+            bloodGroup:BloodGroup,
+            address:Address,
+            numberOfUnits:Units,
+            status:'pending'
         }
         console.log(data);
+        axios({
+            method:'post',
+            url: 'http://localhost:8080/api/makerequest',
+            data: data
+        })
+        .then((response) => {
+            console.log(response);
+            if (response.status === 201) {
+                alert('Request Sent')
+                navigate('/UserDashboard')
+            }
+        })
+        .catch((error) => {
+            alert(error.message)
+            console.log(error);
+        })
     }
 
   return (
@@ -109,6 +136,7 @@ function MakeRequest() {
                     <TextField
                     id="age"
                     required
+                    type="number"
                     label="Age"
                     value={Age}
                     onChange={(e)=>setAge(e.target.value)}

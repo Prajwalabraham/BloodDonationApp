@@ -7,6 +7,7 @@ import SideAppbar from './Components/SideAppBar';
 import MakeRequest from './Pages/Dashboard/MakeRequest';
 import OverallRequest from './Pages/Dashboard/OverallRequest';
 import DonateBlood from './Pages/Dashboard/DonateBlood';
+import Donors from './Pages/Dashboard/Donors';
 
 function App() {
   return (
@@ -53,6 +54,16 @@ function App() {
             </div>
             <div style={{ flex: '1 1 auto' }}>
               <DonateBlood />
+            </div>
+          </div>
+          } />
+          <Route path="/Donors" element={
+            <div style={{ display: 'flex' }}>
+            <div style={{ flex: '0 0 auto' }}>
+              <SideAppbar />
+            </div>
+            <div style={{ flex: '1 1 auto' }}>
+              <Donors />
             </div>
           </div>
           } />

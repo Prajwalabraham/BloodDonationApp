@@ -5,7 +5,7 @@ import axios from 'axios';
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 
-function OverallRequest() {
+function Donors() {
 
   const navigate = useNavigate()
   React.useEffect(() => {
@@ -17,7 +17,7 @@ function OverallRequest() {
     const [rows, setRows] = React.useState([]);
 
     React.useEffect(() => {
-     axios.get('http://localhost:8080/api/getrequests')
+     axios.get('http://localhost:8080/api/getdonors')
       .then(res => {
         console.log(res);
         setRows(res.data)
@@ -53,13 +53,7 @@ const columns = [
     width: 100,
   },
   {
-    field: 'disease',
-    headerName: 'Disease',
-    type: 'string',
-    width: 150,
-  },
-  {
-    field: 'numberOfUnits',
+    field: 'unitsOfBlood',
     headerName: 'Units',
     type: 'number',
     width: 90,
@@ -68,42 +62,15 @@ const columns = [
     field: 'address',
     headerName: 'Address',
     type: 'string',
-    width: 290,
+    width: 390,
   },
-  {
-    field: 'accept',
-    headerName: 'Accept',
-    renderCell: (params) => {
-      return (
-        params.row.status === 'pending' ? 
-        <Button variant="contained" color="success" onClick={() => {handleAccept(params.row)}}>Accept</Button>
-        : 
-        <Typography variant="body1" sx={{color:'green'}} >Accepted</Typography>
-      );
-    }
-  }
 ];
 
-
-  const handleAccept = (row) => {
-    console.log(row.id);
-    axios({
-      method:'put',
-      url: `http://localhost:8080/api/requests/${row.id}/accept`
-    })
-    .then(res => {
-      console.log(res);
-      window.location.reload();
-    })
-    .catch(err => {
-      console.log(err);
-    })
-  }
 
     return (
 
         <div style={{ height: 650, width: '100%', padding:'10px' }}>
-      <Typography variant="h5" color="default">Overall Requests:</Typography>
+      <Typography variant="h5" color="default">Overall Donors:</Typography>
           <DataGrid
             rows={rows}
             columns={columns}
@@ -113,10 +80,9 @@ const columns = [
               },
             }}
             pageSizeOptions={[5, 10]}
-            checkboxSelection
           />
         </div>
       );
 }
 
-export default OverallRequest
+export default Donors
